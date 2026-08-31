@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Timetable Generator</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-bar">
+      <div class="brand">
+        <span class="brand-mark">Timetable</span>
+        <span class="brand-sub">clash-free scheduling, solved with CP-SAT</span>
+      </div>
+      <span class="spacer"></span>
+      <span class="save-state" id="save-state"></span>
+      <button class="btn" id="btn-reset" title="Restore the shipped sample dataset">Reset</button>
+      <button class="btn primary" id="btn-save">Save</button>
+    </div>
+    <div id="hero-body"></div>
+  </header>
+
+  <nav id="nav"></nav>
+  <main id="main"></main>
+
+  <div id="modal-root"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

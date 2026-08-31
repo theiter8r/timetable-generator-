@@ -1,0 +1,1944 @@
+{
+  "days": [
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
+  ],
+  "periods": [
+    {
+      "id": "p1",
+      "start": "09:00",
+      "end": "10:00",
+      "kind": "teaching",
+      "label": "",
+      "session": null
+    },
+    {
+      "id": "p2",
+      "start": "10:00",
+      "end": "11:00",
+      "kind": "teaching",
+      "label": "",
+      "session": null
+    },
+    {
+      "id": "p3",
+      "start": "11:00",
+      "end": "12:00",
+      "kind": "teaching",
+      "label": "",
+      "session": null
+    },
+    {
+      "id": "lunch",
+      "start": "12:00",
+      "end": "12:45",
+      "kind": "break",
+      "label": "Lunch",
+      "session": null
+    },
+    {
+      "id": "p4",
+      "start": "12:45",
+      "end": "13:45",
+      "kind": "teaching",
+      "label": "",
+      "session": null
+    },
+    {
+      "id": "p5",
+      "start": "13:45",
+      "end": "14:45",
+      "kind": "teaching",
+      "label": "",
+      "session": null
+    },
+    {
+      "id": "p6",
+      "start": "14:45",
+      "end": "15:45",
+      "kind": "teaching",
+      "label": "",
+      "session": null
+    }
+  ],
+  "divisions": [
+    {
+      "id": "SE-A",
+      "name": "SE-A",
+      "year": "SE",
+      "strength": 72,
+      "home_room": "C-201"
+    },
+    {
+      "id": "SE-B",
+      "name": "SE-B",
+      "year": "SE",
+      "strength": 72,
+      "home_room": "C-202"
+    },
+    {
+      "id": "SE-C",
+      "name": "SE-C",
+      "year": "SE",
+      "strength": 72,
+      "home_room": "C-203"
+    },
+    {
+      "id": "TE-A",
+      "name": "TE-A",
+      "year": "TE",
+      "strength": 72,
+      "home_room": "C-204"
+    },
+    {
+      "id": "TE-B",
+      "name": "TE-B",
+      "year": "TE",
+      "strength": 72,
+      "home_room": "C-205"
+    },
+    {
+      "id": "TE-C",
+      "name": "TE-C",
+      "year": "TE",
+      "strength": 72,
+      "home_room": "C-206"
+    }
+  ],
+  "batches": [
+    {
+      "id": "SE-A1",
+      "division": "SE-A",
+      "name": "SE-A1",
+      "strength": 24
+    },
+    {
+      "id": "SE-A2",
+      "division": "SE-A",
+      "name": "SE-A2",
+      "strength": 24
+    },
+    {
+      "id": "SE-A3",
+      "division": "SE-A",
+      "name": "SE-A3",
+      "strength": 24
+    },
+    {
+      "id": "SE-B1",
+      "division": "SE-B",
+      "name": "SE-B1",
+      "strength": 24
+    },
+    {
+      "id": "SE-B2",
+      "division": "SE-B",
+      "name": "SE-B2",
+      "strength": 24
+    },
+    {
+      "id": "SE-B3",
+      "division": "SE-B",
+      "name": "SE-B3",
+      "strength": 24
+    },
+    {
+      "id": "SE-C1",
+      "division": "SE-C",
+      "name": "SE-C1",
+      "strength": 24
+    },
+    {
+      "id": "SE-C2",
+      "division": "SE-C",
+      "name": "SE-C2",
+      "strength": 24
+    },
+    {
+      "id": "SE-C3",
+      "division": "SE-C",
+      "name": "SE-C3",
+      "strength": 24
+    },
+    {
+      "id": "TE-A1",
+      "division": "TE-A",
+      "name": "TE-A1",
+      "strength": 24
+    },
+    {
+      "id": "TE-A2",
+      "division": "TE-A",
+      "name": "TE-A2",
+      "strength": 24
+    },
+    {
+      "id": "TE-A3",
+      "division": "TE-A",
+      "name": "TE-A3",
+      "strength": 24
+    },
+    {
+      "id": "TE-B1",
+      "division": "TE-B",
+      "name": "TE-B1",
+      "strength": 24
+    },
+    {
+      "id": "TE-B2",
+      "division": "TE-B",
+      "name": "TE-B2",
+      "strength": 24
+    },
+    {
+      "id": "TE-B3",
+      "division": "TE-B",
+      "name": "TE-B3",
+      "strength": 24
+    },
+    {
+      "id": "TE-C1",
+      "division": "TE-C",
+      "name": "TE-C1",
+      "strength": 24
+    },
+    {
+      "id": "TE-C2",
+      "division": "TE-C",
+      "name": "TE-C2",
+      "strength": 24
+    },
+    {
+      "id": "TE-C3",
+      "division": "TE-C",
+      "name": "TE-C3",
+      "strength": 24
+    }
+  ],
+  "subjects": [
+    {
+      "id": "SE-DSA",
+      "name": "Data Structures & Algorithms",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "DSA"
+    },
+    {
+      "id": "SE-OOP",
+      "name": "Object Oriented Programming",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "OOP"
+    },
+    {
+      "id": "SE-CG",
+      "name": "Computer Graphics",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "CG"
+    },
+    {
+      "id": "SE-DELD",
+      "name": "Digital Electronics & Logic Design",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "DELD"
+    },
+    {
+      "id": "SE-M3",
+      "name": "Engineering Mathematics III",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "M3"
+    },
+    {
+      "id": "SE-DSA-LAB",
+      "name": "Data Structures & Algorithms Lab",
+      "kind": "practical",
+      "room_type": "computer_lab",
+      "short": "DSA Lab"
+    },
+    {
+      "id": "SE-OOP-LAB",
+      "name": "Object Oriented Programming Lab",
+      "kind": "practical",
+      "room_type": "computer_lab",
+      "short": "OOP Lab"
+    },
+    {
+      "id": "SE-CG-LAB",
+      "name": "Computer Graphics Lab",
+      "kind": "practical",
+      "room_type": "computer_lab",
+      "short": "CG Lab"
+    },
+    {
+      "id": "TE-DBMS",
+      "name": "Database Management Systems",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "DBMS"
+    },
+    {
+      "id": "TE-CN",
+      "name": "Computer Networks",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "CN"
+    },
+    {
+      "id": "TE-TOC",
+      "name": "Theory of Computation",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "TOC"
+    },
+    {
+      "id": "TE-SEPM",
+      "name": "Software Engineering & Project Mgmt",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "SEPM"
+    },
+    {
+      "id": "TE-IS",
+      "name": "Information Systems & Security",
+      "kind": "theory",
+      "room_type": "classroom",
+      "short": "IS"
+    },
+    {
+      "id": "TE-DBMS-LAB",
+      "name": "Database Management Systems Lab",
+      "kind": "practical",
+      "room_type": "computer_lab",
+      "short": "DBMS Lab"
+    },
+    {
+      "id": "TE-CN-LAB",
+      "name": "Computer Networks Lab",
+      "kind": "practical",
+      "room_type": "computer_lab",
+      "short": "CN Lab"
+    },
+    {
+      "id": "TE-SEPM-LAB",
+      "name": "Software Engineering & Project Mgmt Lab",
+      "kind": "practical",
+      "room_type": "computer_lab",
+      "short": "SEPM Lab"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "C-201",
+      "name": "Classroom 201",
+      "type": "classroom",
+      "capacity": 70
+    },
+    {
+      "id": "C-202",
+      "name": "Classroom 202",
+      "type": "classroom",
+      "capacity": 70
+    },
+    {
+      "id": "C-203",
+      "name": "Classroom 203",
+      "type": "classroom",
+      "capacity": 70
+    },
+    {
+      "id": "C-204",
+      "name": "Classroom 204",
+      "type": "classroom",
+      "capacity": 70
+    },
+    {
+      "id": "C-205",
+      "name": "Classroom 205",
+      "type": "classroom",
+      "capacity": 70
+    },
+    {
+      "id": "C-206",
+      "name": "Classroom 206",
+      "type": "classroom",
+      "capacity": 70
+    },
+    {
+      "id": "L-101",
+      "name": "Computer Lab 1",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-102",
+      "name": "Computer Lab 2",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-103",
+      "name": "Computer Lab 3",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-104",
+      "name": "Computer Lab 4",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-105",
+      "name": "Computer Lab 5",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-106",
+      "name": "Computer Lab 6",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-107",
+      "name": "Computer Lab 7",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-108",
+      "name": "Computer Lab 8",
+      "type": "computer_lab",
+      "capacity": 30
+    },
+    {
+      "id": "L-109",
+      "name": "Computer Lab 9",
+      "type": "computer_lab",
+      "capacity": 30
+    }
+  ],
+  "teachers": [
+    {
+      "id": "T01",
+      "name": "Prof. S. Kale",
+      "short": "Kale",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 5,
+      "max_per_day": 5
+    },
+    {
+      "id": "T02",
+      "name": "Prof. A. Deshmukh",
+      "short": "Deshmu",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 4,
+      "max_per_day": 5
+    },
+    {
+      "id": "T03",
+      "name": "Prof. R. Iyer",
+      "short": "Iyer",
+      "unavailable_days": [
+        "Sat"
+      ],
+      "unavailable_slots": [],
+      "session_preference": "afternoon",
+      "preference_weight": 5,
+      "max_per_day": 5
+    },
+    {
+      "id": "T04",
+      "name": "Prof. P. Nair",
+      "short": "Nair",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T05",
+      "name": "Prof. M. Joshi",
+      "short": "Joshi",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "afternoon",
+      "preference_weight": 4,
+      "max_per_day": 5
+    },
+    {
+      "id": "T06",
+      "name": "Prof. V. Rane",
+      "short": "Rane",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 5,
+      "max_per_day": 5
+    },
+    {
+      "id": "T07",
+      "name": "Prof. K. Bhosale",
+      "short": "Bhosal",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 2,
+      "max_per_day": 5
+    },
+    {
+      "id": "T08",
+      "name": "Prof. N. Sathe",
+      "short": "Sathe",
+      "unavailable_days": [
+        "Wed"
+      ],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T09",
+      "name": "Prof. D. Kulkarni",
+      "short": "Kulkar",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "afternoon",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T10",
+      "name": "Prof. T. Menon",
+      "short": "Menon",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 4,
+      "max_per_day": 5
+    },
+    {
+      "id": "T11",
+      "name": "Prof. G. Pawar",
+      "short": "Pawar",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T12",
+      "name": "Prof. H. Shaikh",
+      "short": "Shaikh",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T13",
+      "name": "Prof. J. Fernandes",
+      "short": "Fernan",
+      "unavailable_days": [
+        "Sat"
+      ],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T14",
+      "name": "Prof. L. Chavan",
+      "short": "Chavan",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "afternoon",
+      "preference_weight": 5,
+      "max_per_day": 5
+    },
+    {
+      "id": "T15",
+      "name": "Prof. B. Gokhale",
+      "short": "Gokhal",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T16",
+      "name": "Prof. C. Patil",
+      "short": "Patil",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 4,
+      "max_per_day": 5
+    },
+    {
+      "id": "T17",
+      "name": "Prof. F. Ansari",
+      "short": "Ansari",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T18",
+      "name": "Prof. U. Wagh",
+      "short": "Wagh",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "afternoon",
+      "preference_weight": 2,
+      "max_per_day": 5
+    },
+    {
+      "id": "T19",
+      "name": "Prof. Y. Salvi",
+      "short": "Salvi",
+      "unavailable_days": [
+        "Mon"
+      ],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T20",
+      "name": "Prof. Z. Merchant",
+      "short": "Mercha",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "morning",
+      "preference_weight": 5,
+      "max_per_day": 5
+    },
+    {
+      "id": "T21",
+      "name": "Prof. Q. Dsouza",
+      "short": "Dsouza",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    },
+    {
+      "id": "T22",
+      "name": "Prof. E. Bhat",
+      "short": "Bhat",
+      "unavailable_days": [],
+      "unavailable_slots": [],
+      "session_preference": "none",
+      "preference_weight": 3,
+      "max_per_day": 5
+    }
+  ],
+  "assignments": [
+    {
+      "id": "SE-A-SE-DSA",
+      "subject": "SE-DSA",
+      "target": {
+        "kind": "division",
+        "id": "SE-A"
+      },
+      "teachers": [
+        "T01"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-201"
+      ]
+    },
+    {
+      "id": "SE-A-SE-OOP",
+      "subject": "SE-OOP",
+      "target": {
+        "kind": "division",
+        "id": "SE-A"
+      },
+      "teachers": [
+        "T02"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-201"
+      ]
+    },
+    {
+      "id": "SE-A-SE-CG",
+      "subject": "SE-CG",
+      "target": {
+        "kind": "division",
+        "id": "SE-A"
+      },
+      "teachers": [
+        "T03"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-201"
+      ]
+    },
+    {
+      "id": "SE-A-SE-DELD",
+      "subject": "SE-DELD",
+      "target": {
+        "kind": "division",
+        "id": "SE-A"
+      },
+      "teachers": [
+        "T04"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-201"
+      ]
+    },
+    {
+      "id": "SE-A-SE-M3",
+      "subject": "SE-M3",
+      "target": {
+        "kind": "division",
+        "id": "SE-A"
+      },
+      "teachers": [
+        "T05"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-201"
+      ]
+    },
+    {
+      "id": "SE-A1-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A1"
+      },
+      "teachers": [
+        "T06"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A2-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A2"
+      },
+      "teachers": [
+        "T07"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A3-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A3"
+      },
+      "teachers": [
+        "T08"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A1-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A1"
+      },
+      "teachers": [
+        "T09"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A2-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A2"
+      },
+      "teachers": [
+        "T10"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A3-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A3"
+      },
+      "teachers": [
+        "T11"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A1-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A1"
+      },
+      "teachers": [
+        "T12"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A2-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A2"
+      },
+      "teachers": [
+        "T13"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-A3-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-A3"
+      },
+      "teachers": [
+        "T14"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B-SE-DSA",
+      "subject": "SE-DSA",
+      "target": {
+        "kind": "division",
+        "id": "SE-B"
+      },
+      "teachers": [
+        "T15"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-202"
+      ]
+    },
+    {
+      "id": "SE-B-SE-OOP",
+      "subject": "SE-OOP",
+      "target": {
+        "kind": "division",
+        "id": "SE-B"
+      },
+      "teachers": [
+        "T16"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-202"
+      ]
+    },
+    {
+      "id": "SE-B-SE-CG",
+      "subject": "SE-CG",
+      "target": {
+        "kind": "division",
+        "id": "SE-B"
+      },
+      "teachers": [
+        "T17"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-202"
+      ]
+    },
+    {
+      "id": "SE-B-SE-DELD",
+      "subject": "SE-DELD",
+      "target": {
+        "kind": "division",
+        "id": "SE-B"
+      },
+      "teachers": [
+        "T18"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-202"
+      ]
+    },
+    {
+      "id": "SE-B-SE-M3",
+      "subject": "SE-M3",
+      "target": {
+        "kind": "division",
+        "id": "SE-B"
+      },
+      "teachers": [
+        "T19"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-202"
+      ]
+    },
+    {
+      "id": "SE-B1-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B1"
+      },
+      "teachers": [
+        "T20"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B2-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B2"
+      },
+      "teachers": [
+        "T21"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B3-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B3"
+      },
+      "teachers": [
+        "T22"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B1-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B1"
+      },
+      "teachers": [
+        "T01"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B2-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B2"
+      },
+      "teachers": [
+        "T02"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B3-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B3"
+      },
+      "teachers": [
+        "T03"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B1-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B1"
+      },
+      "teachers": [
+        "T04"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B2-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B2"
+      },
+      "teachers": [
+        "T05"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-B3-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-B3"
+      },
+      "teachers": [
+        "T06"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C-SE-DSA",
+      "subject": "SE-DSA",
+      "target": {
+        "kind": "division",
+        "id": "SE-C"
+      },
+      "teachers": [
+        "T07"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-203"
+      ]
+    },
+    {
+      "id": "SE-C-SE-OOP",
+      "subject": "SE-OOP",
+      "target": {
+        "kind": "division",
+        "id": "SE-C"
+      },
+      "teachers": [
+        "T08"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-203"
+      ]
+    },
+    {
+      "id": "SE-C-SE-CG",
+      "subject": "SE-CG",
+      "target": {
+        "kind": "division",
+        "id": "SE-C"
+      },
+      "teachers": [
+        "T09"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-203"
+      ]
+    },
+    {
+      "id": "SE-C-SE-DELD",
+      "subject": "SE-DELD",
+      "target": {
+        "kind": "division",
+        "id": "SE-C"
+      },
+      "teachers": [
+        "T10"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-203"
+      ]
+    },
+    {
+      "id": "SE-C-SE-M3",
+      "subject": "SE-M3",
+      "target": {
+        "kind": "division",
+        "id": "SE-C"
+      },
+      "teachers": [
+        "T11"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-203"
+      ]
+    },
+    {
+      "id": "SE-C1-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C1"
+      },
+      "teachers": [
+        "T12"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C2-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C2"
+      },
+      "teachers": [
+        "T13"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C3-SE-DSA-LAB",
+      "subject": "SE-DSA-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C3"
+      },
+      "teachers": [
+        "T14"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C1-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C1"
+      },
+      "teachers": [
+        "T15"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C2-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C2"
+      },
+      "teachers": [
+        "T16"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C3-SE-OOP-LAB",
+      "subject": "SE-OOP-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C3"
+      },
+      "teachers": [
+        "T17"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C1-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C1"
+      },
+      "teachers": [
+        "T18"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C2-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C2"
+      },
+      "teachers": [
+        "T19"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "SE-C3-SE-CG-LAB",
+      "subject": "SE-CG-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "SE-C3"
+      },
+      "teachers": [
+        "T20"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A-TE-DBMS",
+      "subject": "TE-DBMS",
+      "target": {
+        "kind": "division",
+        "id": "TE-A"
+      },
+      "teachers": [
+        "T21"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-204"
+      ]
+    },
+    {
+      "id": "TE-A-TE-CN",
+      "subject": "TE-CN",
+      "target": {
+        "kind": "division",
+        "id": "TE-A"
+      },
+      "teachers": [
+        "T22"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-204"
+      ]
+    },
+    {
+      "id": "TE-A-TE-TOC",
+      "subject": "TE-TOC",
+      "target": {
+        "kind": "division",
+        "id": "TE-A"
+      },
+      "teachers": [
+        "T01"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-204"
+      ]
+    },
+    {
+      "id": "TE-A-TE-SEPM",
+      "subject": "TE-SEPM",
+      "target": {
+        "kind": "division",
+        "id": "TE-A"
+      },
+      "teachers": [
+        "T02"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-204"
+      ]
+    },
+    {
+      "id": "TE-A-TE-IS",
+      "subject": "TE-IS",
+      "target": {
+        "kind": "division",
+        "id": "TE-A"
+      },
+      "teachers": [
+        "T03"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-204"
+      ]
+    },
+    {
+      "id": "TE-A1-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A1"
+      },
+      "teachers": [
+        "T04"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A2-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A2"
+      },
+      "teachers": [
+        "T05"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A3-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A3"
+      },
+      "teachers": [
+        "T06"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A1-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A1"
+      },
+      "teachers": [
+        "T07"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A2-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A2"
+      },
+      "teachers": [
+        "T08"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A3-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A3"
+      },
+      "teachers": [
+        "T09"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A1-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A1"
+      },
+      "teachers": [
+        "T10"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A2-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A2"
+      },
+      "teachers": [
+        "T11"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-A3-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-A3"
+      },
+      "teachers": [
+        "T12"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B-TE-DBMS",
+      "subject": "TE-DBMS",
+      "target": {
+        "kind": "division",
+        "id": "TE-B"
+      },
+      "teachers": [
+        "T13"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-205"
+      ]
+    },
+    {
+      "id": "TE-B-TE-CN",
+      "subject": "TE-CN",
+      "target": {
+        "kind": "division",
+        "id": "TE-B"
+      },
+      "teachers": [
+        "T14"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-205"
+      ]
+    },
+    {
+      "id": "TE-B-TE-TOC",
+      "subject": "TE-TOC",
+      "target": {
+        "kind": "division",
+        "id": "TE-B"
+      },
+      "teachers": [
+        "T15"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-205"
+      ]
+    },
+    {
+      "id": "TE-B-TE-SEPM",
+      "subject": "TE-SEPM",
+      "target": {
+        "kind": "division",
+        "id": "TE-B"
+      },
+      "teachers": [
+        "T16"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-205"
+      ]
+    },
+    {
+      "id": "TE-B-TE-IS",
+      "subject": "TE-IS",
+      "target": {
+        "kind": "division",
+        "id": "TE-B"
+      },
+      "teachers": [
+        "T17"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-205"
+      ]
+    },
+    {
+      "id": "TE-B1-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B1"
+      },
+      "teachers": [
+        "T18"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B2-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B2"
+      },
+      "teachers": [
+        "T19"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B3-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B3"
+      },
+      "teachers": [
+        "T20"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B1-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B1"
+      },
+      "teachers": [
+        "T21"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B2-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B2"
+      },
+      "teachers": [
+        "T22"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B3-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B3"
+      },
+      "teachers": [
+        "T01"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B1-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B1"
+      },
+      "teachers": [
+        "T02"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B2-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B2"
+      },
+      "teachers": [
+        "T03"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-B3-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-B3"
+      },
+      "teachers": [
+        "T04"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C-TE-DBMS",
+      "subject": "TE-DBMS",
+      "target": {
+        "kind": "division",
+        "id": "TE-C"
+      },
+      "teachers": [
+        "T05"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-206"
+      ]
+    },
+    {
+      "id": "TE-C-TE-CN",
+      "subject": "TE-CN",
+      "target": {
+        "kind": "division",
+        "id": "TE-C"
+      },
+      "teachers": [
+        "T06"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-206"
+      ]
+    },
+    {
+      "id": "TE-C-TE-TOC",
+      "subject": "TE-TOC",
+      "target": {
+        "kind": "division",
+        "id": "TE-C"
+      },
+      "teachers": [
+        "T07"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-206"
+      ]
+    },
+    {
+      "id": "TE-C-TE-SEPM",
+      "subject": "TE-SEPM",
+      "target": {
+        "kind": "division",
+        "id": "TE-C"
+      },
+      "teachers": [
+        "T08"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-206"
+      ]
+    },
+    {
+      "id": "TE-C-TE-IS",
+      "subject": "TE-IS",
+      "target": {
+        "kind": "division",
+        "id": "TE-C"
+      },
+      "teachers": [
+        "T09"
+      ],
+      "sessions_per_week": 3,
+      "slots_per_session": 1,
+      "allowed_rooms": [
+        "C-206"
+      ]
+    },
+    {
+      "id": "TE-C1-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C1"
+      },
+      "teachers": [
+        "T10"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C2-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C2"
+      },
+      "teachers": [
+        "T11"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C3-TE-DBMS-LAB",
+      "subject": "TE-DBMS-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C3"
+      },
+      "teachers": [
+        "T12"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C1-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C1"
+      },
+      "teachers": [
+        "T13"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C2-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C2"
+      },
+      "teachers": [
+        "T14"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C3-TE-CN-LAB",
+      "subject": "TE-CN-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C3"
+      },
+      "teachers": [
+        "T15"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C1-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C1"
+      },
+      "teachers": [
+        "T16"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C2-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C2"
+      },
+      "teachers": [
+        "T17"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    },
+    {
+      "id": "TE-C3-TE-SEPM-LAB",
+      "subject": "TE-SEPM-LAB",
+      "target": {
+        "kind": "batch",
+        "id": "TE-C3"
+      },
+      "teachers": [
+        "T18"
+      ],
+      "sessions_per_week": 1,
+      "slots_per_session": 2,
+      "allowed_rooms": []
+    }
+  ],
+  "pinned": [
+    {
+      "id": "pin-mentoring",
+      "name": "Mentoring",
+      "day": "Sat",
+      "period": "p6",
+      "slots_per_session": 1,
+      "targets": [
+        {
+          "kind": "division",
+          "id": "SE-A"
+        },
+        {
+          "kind": "division",
+          "id": "SE-B"
+        },
+        {
+          "kind": "division",
+          "id": "SE-C"
+        },
+        {
+          "kind": "division",
+          "id": "TE-A"
+        },
+        {
+          "kind": "division",
+          "id": "TE-B"
+        },
+        {
+          "kind": "division",
+          "id": "TE-C"
+        }
+      ],
+      "teachers": [],
+      "room": null
+    }
+  ],
+  "weights": {
+    "session_preference": 10,
+    "even_spread": 4,
+    "student_gap": 2
+  },
+  "options": {
+    "max_seconds": 30.0,
+    "one_session_per_day": true,
+    "parallel_batch_labs": true,
+    "random_seed": 0
+  }
+}

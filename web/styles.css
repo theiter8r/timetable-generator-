@@ -1,0 +1,591 @@
+/* ------------------------------------------------------------------ *
+ * Warm, editorial styling: bone background, elevated soft cards, a
+ * gradient-mesh hero with a ring stat, high-contrast serif display type
+ * and pill progress bars in bright accents.
+ * ------------------------------------------------------------------ */
+
+/* Anthropic Serif ships in two optical cuts and we use both for what they were
+   drawn for: Display (tighter, higher contrast) for headlines and big figures,
+   Text (more open, sturdier) for prose at reading size. */
+@font-face {
+  font-family: "Anthropic Serif Display";
+  src: url("/static/fonts/AnthropicSerif-Display-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Serif Display";
+  src: url("/static/fonts/AnthropicSerif-Display-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Serif Display";
+  src: url("/static/fonts/AnthropicSerif-Display-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Anthropic Serif Text";
+  src: url("/static/fonts/AnthropicSerif-Text-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: light;
+
+  --bone: #efece4;
+  --bone-deep: #e7e3d8;
+  --card: #fcfbf8;
+  --ink: #16150f;
+  --ink-soft: #3d3a31;
+  --muted: #817d71;
+  --line: #e4e0d4;
+  --line-soft: #edeae0;
+
+  --green: #35c04a;
+  --green-deep: #1f8c39;
+  --orange: #e8963c;
+  --pink: #db6fd2;
+  --violet: #7b5bd6;
+  --red: #d1503f;
+
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow: 0 1px 2px rgba(36, 30, 16, .04), 0 10px 28px rgba(36, 30, 16, .07);
+  --shadow-lift: 0 2px 4px rgba(36, 30, 16, .05), 0 18px 44px rgba(36, 30, 16, .11);
+
+  /* Headlines and large figures. Fallbacks are macOS high-contrast serifs so
+     the page still reads correctly before the webfont lands. */
+  --display: "Anthropic Serif Display", Didot, "Bodoni 72", Palatino, Georgia, ui-serif, serif;
+  /* Editorial prose at reading size -- the Text cut, never the Display one. */
+  --serif-text: "Anthropic Serif Text", "Iowan Old Style", Palatino, Georgia, ui-serif, serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font: 14px/1.55 var(--sans);
+  background: var(--bone);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Small uppercase label, used everywhere for keys and column heads. */
+.eyebrow,
+nav button,
+table.edit th,
+.metric .k,
+.side-k,
+.load-table th,
+.grid-head .load,
+button.btn {
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-size: 10.5px;
+  font-weight: 650;
+}
+
+/* ------------------------------------------------------------------ *
+ * Hero
+ * ------------------------------------------------------------------ */
+.hero {
+  position: relative;
+  color: #fff;
+  /* Bottom padding leaves room for the nav pill to ride up into. */
+  padding: 18px 26px 58px;
+  background:
+    radial-gradient(78% 88% at 6% -4%, #57a83c 0%, rgba(87, 168, 60, 0) 58%),
+    radial-gradient(72% 92% at 96% 0%, #a25fd8 0%, rgba(162, 95, 216, 0) 60%),
+    radial-gradient(88% 96% at 0% 104%, #e08a3a 0%, rgba(224, 138, 58, 0) 62%),
+    radial-gradient(62% 74% at 56% 92%, #ecd6b6 0%, rgba(236, 214, 182, 0) 62%),
+    linear-gradient(148deg, #8fb55a 0%, #c79b72 52%, #b98fc4 100%);
+  background-color: #b98fc4;
+}
+
+.hero-bar { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+.brand-mark {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 27px;
+  letter-spacing: .005em;
+  line-height: 1.1;
+}
+.brand-sub { display: block; font-size: 11.5px; opacity: .82; letter-spacing: .02em; }
+
+.spacer { flex: 1; }
+.save-state { font-size: 11.5px; opacity: .85; letter-spacing: .02em; }
+
+.hero-tagline { text-align: center; padding: 26px 0 4px; }
+.hero-tagline h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1.1;
+  margin: 0 0 8px;
+}
+.hero-tagline p {
+  margin: 0 auto;
+  max-width: 60ch;
+  font-family: var(--serif-text);
+  font-size: 15px;
+  opacity: .93;
+  line-height: 1.62;
+}
+
+/* --- ring + flanking stats --- */
+.hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 6vw, 74px);
+  padding: 22px 0 6px;
+  flex-wrap: wrap;
+}
+.side { text-align: center; }
+.side-v { font-family: var(--display); font-weight: 300; font-size: 42px; line-height: 1; }
+.side-k { display: block; margin-top: 8px; opacity: .88; }
+
+.ring {
+  --p: 0%;
+  position: relative;
+  width: 214px;
+  height: 214px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  background: conic-gradient(#fff var(--p), rgba(255, 255, 255, .32) 0);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 7px), #000 calc(100% - 6px));
+  mask: radial-gradient(farthest-side, #0000 calc(100% - 7px), #000 calc(100% - 6px));
+}
+/* The mask hollows the ring, so the label lives in a sibling laid over it. */
+.ring-wrap { position: relative; display: grid; place-items: center; }
+.ring-label { position: absolute; text-align: center; pointer-events: none; }
+.ring-v { font-family: var(--display); font-weight: 300; font-size: 66px; line-height: 1; }
+.ring-k { display: block; margin-top: 10px; opacity: .9; }
+
+/* ------------------------------------------------------------------ *
+ * Nav
+ * ------------------------------------------------------------------ */
+/* A floating pill bar that rides up over the bottom of the gradient, then
+   pins to the top of the viewport once you scroll past it. */
+nav {
+  position: sticky;
+  top: 10px;
+  z-index: 30;
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: -32px 22px 0;
+  padding: 7px 9px;
+  border-radius: 999px;
+  background: rgba(252, 251, 248, .93);
+  backdrop-filter: saturate(1.7) blur(14px);
+  box-shadow: var(--shadow);
+}
+nav button {
+  background: none;
+  border: 0;
+  padding: 9px 15px;
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: var(--sans);
+  white-space: nowrap;
+}
+nav button:hover { color: var(--ink); background: var(--bone); }
+nav button.active { background: var(--ink); color: var(--bone); }
+
+main { padding: 30px 22px 80px; max-width: 1560px; }
+
+/* ------------------------------------------------------------------ *
+ * Cards
+ * ------------------------------------------------------------------ */
+.panel {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px 26px;
+  margin-bottom: 20px;
+}
+.panel h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 25px;
+  margin: 0 0 6px;
+  letter-spacing: .005em;
+}
+.panel .hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.62;
+  margin: 0 0 18px;
+  max-width: 82ch;
+}
+
+.panel:first-child { box-shadow: var(--shadow-lift); }
+
+/* ------------------------------------------------------------------ *
+ * Buttons
+ * ------------------------------------------------------------------ */
+button.btn {
+  font-family: var(--sans);
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+button.btn:hover { border-color: var(--ink); }
+button.btn.primary {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+button.btn.primary:hover { background: var(--green-deep); border-color: var(--green-deep); }
+button.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* On the gradient: translucent glass rather than solid chips. */
+.hero button.btn {
+  background: rgba(255, 255, 255, .16);
+  border-color: rgba(255, 255, 255, .42);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+.hero button.btn:hover { background: rgba(255, 255, 255, .3); border-color: #fff; }
+.hero button.btn.primary { background: #fff; border-color: #fff; color: var(--green-deep); }
+.hero button.btn.primary:hover { background: #fff; }
+
+.toolbar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+.toolbar .grow { flex: 1; }
+.toolbar a { text-decoration: none; }
+
+/* ------------------------------------------------------------------ *
+ * Editable config tables
+ * ------------------------------------------------------------------ */
+.tbl-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-soft);
+}
+table.edit { border-collapse: collapse; width: 100%; font-size: 13px; }
+table.edit th {
+  background: var(--bone);
+  color: var(--muted);
+  text-align: left;
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+table.edit td { padding: 5px 7px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+table.edit tr:last-child td { border-bottom: 0; }
+table.edit tr:hover td { background: rgba(255, 255, 255, .6); }
+
+table.edit input,
+table.edit select {
+  font: inherit;
+  font-size: 13px;
+  width: 100%;
+  min-width: 62px;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+}
+table.edit input:hover, table.edit select:hover { border-color: var(--line); background: #fff; }
+table.edit input:focus, table.edit select:focus {
+  outline: none;
+  border-color: var(--green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(53, 192, 74, .16);
+}
+table.edit input[type="number"] { max-width: 96px; }
+td.actions { width: 40px; text-align: center; }
+
+button.icon {
+  border: 0;
+  background: none;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  padding: 5px 8px;
+  border-radius: 999px;
+}
+button.icon:hover { color: var(--red); background: rgba(209, 80, 63, .1); }
+
+/* --- chips --- */
+.chips { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; padding: 3px 0; }
+.chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  letter-spacing: .01em;
+}
+.chip:hover { border-color: var(--ink); color: var(--ink); }
+.chip.on { background: var(--ink); border-color: var(--ink); color: var(--bone); }
+.chip.slots { border-style: dashed; }
+.chip.slots.has {
+  border-style: solid;
+  border-color: var(--orange);
+  color: #9a5c12;
+  background: rgba(232, 150, 60, .14);
+}
+.chips select {
+  font: inherit;
+  font-size: 11.5px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ *
+ * Messages
+ * ------------------------------------------------------------------ */
+.msg {
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 13.2px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  border-left: 3px solid;
+}
+.msg.error { background: rgba(209, 80, 63, .09); border-color: var(--red); color: #8e2f22; }
+.msg.warning { background: rgba(232, 150, 60, .13); border-color: var(--orange); color: #8a5411; }
+.msg.ok { background: rgba(53, 192, 74, .12); border-color: var(--green); color: var(--green-deep); }
+.msg.info { background: rgba(123, 91, 214, .1); border-color: var(--violet); color: #4c37a0; }
+
+/* ------------------------------------------------------------------ *
+ * Metric row (the Carbs / Protein / Fat pattern)
+ * ------------------------------------------------------------------ */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(146px, 1fr));
+  gap: 26px;
+}
+.metric { text-align: center; }
+.metric .k { display: block; color: var(--muted); margin-bottom: 10px; }
+.metric .track {
+  height: 7px;
+  border-radius: 999px;
+  background: var(--bone-deep);
+  overflow: hidden;
+  margin-bottom: 11px;
+}
+.metric .fill { display: block; height: 100%; border-radius: 999px; background: var(--green); }
+.metric .fill.orange { background: var(--orange); }
+.metric .fill.pink { background: var(--pink); }
+.metric .fill.violet { background: var(--violet); }
+.metric .v { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.metric .v.serif { font-family: var(--display); font-weight: 400; font-size: 26px; }
+
+/* ------------------------------------------------------------------ *
+ * Timetable grid
+ * ------------------------------------------------------------------ */
+.grid-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin: 20px 0 12px; }
+.grid-head h3 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0; }
+.grid-head .load { color: var(--muted); }
+
+.tt-wrap { overflow-x: auto; border-radius: var(--radius-sm); border: 1px solid var(--line-soft); }
+table.tt { border-collapse: collapse; width: 100%; font-size: 12px; background: #fff; }
+table.tt th, table.tt td {
+  border-right: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  padding: 8px 9px;
+  text-align: left;
+  vertical-align: top;
+}
+table.tt th:last-child, table.tt td:last-child { border-right: 0; }
+table.tt th {
+  background: var(--bone);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  font-size: 10.5px;
+  font-weight: 650;
+  position: sticky;
+  top: 0;
+}
+table.tt td.time {
+  white-space: nowrap;
+  color: var(--muted);
+  width: 96px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  background: var(--card);
+}
+table.tt tr.break td {
+  background: var(--bone);
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+  letter-spacing: .04em;
+}
+table.tt td.filled { background: rgba(123, 91, 214, .05); }
+table.tt td.cont { background: rgba(53, 192, 74, .05); }
+
+.entry { padding-left: 9px; border-left: 3px solid var(--violet); margin-bottom: 9px; }
+.entry:last-child { margin-bottom: 0; }
+.entry.practical { border-left-color: var(--green); }
+.entry .subj { font-weight: 650; font-size: 12.5px; }
+.entry.practical .subj { color: var(--green-deep); }
+.entry .who, .entry .where { color: var(--muted); font-size: 11px; display: block; }
+.entry .tag {
+  display: inline-block;
+  background: var(--bone-deep);
+  border-radius: 999px;
+  padding: 1px 7px;
+  margin-right: 5px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.entry .dbl {
+  font-size: 9.5px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+}
+.cont-mark { color: var(--muted); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; }
+
+/* ------------------------------------------------------------------ *
+ * Load table
+ * ------------------------------------------------------------------ */
+.load-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.load-table th, .load-table td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); text-align: left; }
+.load-table th { color: var(--muted); }
+.load-table tr:last-child td { border-bottom: 0; }
+.load-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.load-table .track { height: 7px; border-radius: 999px; background: var(--bone-deep); min-width: 90px; }
+.load-table .bar { display: block; height: 100%; border-radius: 999px; background: var(--violet); }
+
+/* ------------------------------------------------------------------ *
+ * Modal
+ * ------------------------------------------------------------------ */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(28, 24, 14, .42);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+  padding: 22px;
+}
+.modal {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+  padding: 26px 28px;
+  max-width: 660px;
+  width: 100%;
+  max-height: 86vh;
+  overflow: auto;
+}
+.modal h3 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 0 0 6px; }
+.modal p { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 0 0 18px; }
+
+table.picker { border-collapse: collapse; width: 100%; font-size: 12px; margin-bottom: 18px; }
+table.picker th, table.picker td { border: 1px solid var(--line-soft); padding: 0; text-align: center; }
+table.picker th {
+  background: var(--bone);
+  padding: 8px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 10px;
+}
+table.picker td.lbl {
+  background: var(--bone);
+  padding: 8px 10px;
+  color: var(--muted);
+  white-space: nowrap;
+  font-size: 11px;
+}
+table.picker button {
+  width: 100%;
+  border: 0;
+  background: none;
+  padding: 11px 4px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 10px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+table.picker button.off:hover { background: rgba(53, 192, 74, .12); }
+table.picker button.on { background: rgba(209, 80, 63, .13); color: #8e2f22; font-weight: 700; }
+
+/* ------------------------------------------------------------------ *
+ * Forms
+ * ------------------------------------------------------------------ */
+.row { display: flex; gap: 20px; flex-wrap: wrap; }
+.row > * { flex: 1; min-width: 230px; }
+
+label.field { display: block; font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+label.field input, label.field select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  font: inherit;
+  font-size: 13px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+}
+label.field input:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(53, 192, 74, .16);
+}
+
+label.check { display: flex; gap: 11px; align-items: flex-start; font-size: 13.5px; margin-bottom: 16px; }
+label.check input { margin-top: 4px; accent-color: var(--green); width: 16px; height: 16px; }
+label.check span strong { font-weight: 650; }
+label.check span small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.6; margin-top: 3px; }
+
+ul.plain { margin: 8px 0 0; padding-left: 20px; font-size: 13px; }
+ul.plain li { margin-bottom: 5px; }
+
+.empty { color: var(--muted); font-size: 13px; padding: 20px 0; text-align: center; }
+
+/* ------------------------------------------------------------------ *
+ * Print: drop the chrome, keep the grid readable on paper.
+ * ------------------------------------------------------------------ */
+@media print {
+  .hero, nav, .toolbar, .panel.actions { display: none !important; }
+  body { background: #fff; }
+  main { padding: 0; }
+  .panel { box-shadow: none; padding: 0; }
+  table.tt { font-size: 10px; }
+}
