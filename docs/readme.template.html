@@ -1,0 +1,604 @@
+<title>Timetable — clash-free scheduling with CP-SAT</title>
+<style>
+/*__FONTS__*/
+
+/* ---------------------------------------------------------------- *
+ * Tokens. Neutrals carry a warm olive bias so they read as chosen
+ * rather than inherited; every component styles through these, so the
+ * theme overrides below never have to touch a component rule.
+ * ---------------------------------------------------------------- */
+:root {
+  --ground: #efece4;
+  --card: #fcfbf8;
+  --sunk: #e7e3d8;
+  --ink: #16150f;
+  --ink-soft: #3f3b32;
+  --muted: #7e7a6e;
+  --line: #e0dccf;
+  --hair: #ebe7db;
+
+  --hard: #6a4ecb;      /* hard constraints, theory sessions */
+  --soft: #b07c22;      /* soft goals, tunable weights */
+  --good: #1f8c39;      /* verified, practicals */
+  --clash: #b83a29;     /* the thing this project exists to prevent */
+
+  --code-bg: #f4f1e8;
+  --shadow: 0 1px 2px rgba(36, 30, 16, .04), 0 10px 30px rgba(36, 30, 16, .07);
+
+  --display: "Anthropic Serif Display", Didot, Palatino, Georgia, serif;
+  --text: "Anthropic Serif Text", "Iowan Old Style", Palatino, Georgia, serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+
+  --measure: 66ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground: #14130e;
+    --card: #1c1a14;
+    --sunk: #23211a;
+    --ink: #eeebe1;
+    --ink-soft: #cbc6b8;
+    --muted: #98937f;
+    --line: #302d24;
+    --hair: #292620;
+    --hard: #a992ff;
+    --soft: #e0a95a;
+    --good: #5fd48c;
+    --clash: #ff8d7a;
+    --code-bg: #201e17;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 34px rgba(0, 0, 0, .34);
+  }
+}
+
+/* The viewer's own toggle must win over the OS preference, both ways. */
+:root[data-theme="dark"] {
+  --ground: #14130e; --card: #1c1a14; --sunk: #23211a;
+  --ink: #eeebe1; --ink-soft: #cbc6b8; --muted: #98937f;
+  --line: #302d24; --hair: #292620;
+  --hard: #a992ff; --soft: #e0a95a; --good: #5fd48c; --clash: #ff8d7a;
+  --code-bg: #201e17;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 12px 34px rgba(0, 0, 0, .34);
+}
+:root[data-theme="light"] {
+  --ground: #efece4; --card: #fcfbf8; --sunk: #e7e3d8;
+  --ink: #16150f; --ink-soft: #3f3b32; --muted: #7e7a6e;
+  --line: #e0dccf; --hair: #ebe7db;
+  --hard: #6a4ecb; --soft: #b07c22; --good: #1f8c39; --clash: #b83a29;
+  --code-bg: #f4f1e8;
+  --shadow: 0 1px 2px rgba(36, 30, 16, .04), 0 10px 30px rgba(36, 30, 16, .07);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 17px;
+  line-height: 1.68;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------------------------------------------------------- *
+ * Hero
+ * ---------------------------------------------------------------- */
+.hero {
+  color: #fff;
+  padding: 60px 24px 64px;
+  text-align: center;
+  background:
+    radial-gradient(78% 88% at 6% -6%, #57a83c 0%, rgba(87, 168, 60, 0) 58%),
+    radial-gradient(72% 92% at 96% 0%, #a25fd8 0%, rgba(162, 95, 216, 0) 60%),
+    radial-gradient(88% 96% at 0% 106%, #e08a3a 0%, rgba(224, 138, 58, 0) 62%),
+    radial-gradient(62% 74% at 58% 94%, #ecd6b6 0%, rgba(236, 214, 182, 0) 62%),
+    linear-gradient(148deg, #8fb55a 0%, #c79b72 52%, #b98fc4 100%);
+  background-color: #b98fc4;
+}
+.hero-inner { max-width: 900px; margin: 0 auto; }
+
+.wordmark {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(38px, 7vw, 62px);
+  line-height: 1.06;
+  margin: 0;
+  letter-spacing: .004em;
+  text-wrap: balance;
+}
+.thesis {
+  margin: 16px auto 0;
+  max-width: 54ch;
+  font-size: clamp(16px, 2.1vw, 19px);
+  line-height: 1.6;
+  opacity: .95;
+  text-wrap: balance;
+}
+
+.figures {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 6vw, 68px);
+  flex-wrap: wrap;
+  margin-top: 44px;
+}
+.fig { text-align: center; }
+.fig-v {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(32px, 5vw, 44px);
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.fig-k {
+  display: block;
+  margin-top: 9px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  opacity: .9;
+}
+
+.ring-wrap { position: relative; display: grid; place-items: center; }
+.ring {
+  width: 190px; height: 190px; border-radius: 50%;
+  background: conic-gradient(#fff 100%, rgba(255, 255, 255, .3) 0);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 6px), #000 calc(100% - 5px));
+  mask: radial-gradient(farthest-side, #0000 calc(100% - 6px), #000 calc(100% - 5px));
+}
+.ring-label { position: absolute; text-align: center; pointer-events: none; }
+.ring-v {
+  font-family: var(--display); font-weight: 300; font-size: 60px; line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.ring-k { display: block; margin-top: 8px; font-size: 13px; opacity: .92; }
+
+/* ---------------------------------------------------------------- *
+ * Document flow
+ * ---------------------------------------------------------------- */
+main {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+section { padding-top: 56px; }
+
+h2 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1.2;
+  margin: 0 0 4px;
+  text-wrap: balance;
+}
+h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 20px;
+  margin: 32px 0 6px;
+}
+.eyebrow {
+  display: block;
+  font-family: var(--text);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+p { margin: 14px 0; }
+a { color: var(--hard); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--hard);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+code {
+  font-family: var(--mono);
+  font-size: .84em;
+  background: var(--code-bg);
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  padding: .1em .38em;
+}
+pre {
+  font-family: var(--mono);
+  font-size: 13.5px;
+  line-height: 1.72;
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px 18px;
+  overflow-x: auto;
+  margin: 18px 0;
+}
+pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+pre .c { color: var(--muted); }
+
+/* ---------------------------------------------------------------- *
+ * The clash demonstration -- the page's thesis, stated as data
+ * ---------------------------------------------------------------- */
+.demo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+  gap: 18px;
+  margin: 26px 0 8px;
+}
+.slab {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px 18px 18px;
+  box-shadow: var(--shadow);
+}
+.slab-k {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 10.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.slab.bad .slab-k { color: var(--clash); }
+.slab.good .slab-k { color: var(--good); }
+.mark {
+  width: 15px; height: 15px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 10px; line-height: 1; color: #fff;
+}
+.slab.bad .mark { background: var(--clash); }
+.slab.good .mark { background: var(--good); }
+
+.slot {
+  display: flex; align-items: baseline; gap: 10px;
+  font-family: var(--mono); font-size: 12.5px;
+  padding: 8px 0; border-top: 1px solid var(--hair);
+}
+.slot:first-of-type { border-top: 0; }
+.slot .when { color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.slot .what { color: var(--ink-soft); }
+.slab.bad .slot .what { color: var(--clash); }
+.slab-note {
+  margin: 14px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- *
+ * Hard vs soft -- solid rule for guaranteed, dashed for negotiable.
+ * The single structural device on the page, and it encodes the
+ * project's actual constraint model rather than decorating.
+ * ---------------------------------------------------------------- */
+.rules { margin: 20px 0 0; padding: 0; list-style: none; }
+.rules li {
+  padding: 9px 0 9px 18px;
+  font-size: 16px;
+  line-height: 1.55;
+}
+.rules.hard li { border-left: 3px solid var(--hard); }
+.rules.soft li { border-left: 3px dashed var(--soft); }
+.rules li + li { margin-top: 6px; }
+.rules .lead { font-weight: 600; }
+
+.legend {
+  display: flex; gap: 20px; flex-wrap: wrap;
+  font-size: 12.5px; color: var(--muted); margin-top: 14px;
+}
+.legend span { display: flex; align-items: center; gap: 8px; }
+.swatch { width: 22px; height: 0; border-top: 3px solid; }
+.swatch.h { border-color: var(--hard); }
+.swatch.s { border-top-style: dashed; border-color: var(--soft); }
+
+/* ---------------------------------------------------------------- *
+ * Tables
+ * ---------------------------------------------------------------- */
+.table-wrap { overflow-x: auto; margin: 20px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--hair); }
+th {
+  font-size: 10.5px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); border-bottom-color: var(--line);
+}
+td:first-child { white-space: nowrap; font-weight: 600; }
+tbody tr:last-child td { border-bottom: 0; }
+
+.callout {
+  border-left: 3px solid var(--soft);
+  background: var(--card);
+  border-radius: 0 10px 10px 0;
+  padding: 14px 18px;
+  margin: 22px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.callout .k {
+  display: block; font-size: 10.5px; font-weight: 600; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--soft); margin-bottom: 5px;
+}
+
+hr {
+  border: 0; border-top: 1px solid var(--line);
+  margin: 0;
+}
+
+footer {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 26px 24px 70px;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+</style>
+
+<header class="hero">
+  <div class="hero-inner">
+    <h1 class="wordmark">Timetable</h1>
+    <p class="thesis">
+      Builds the week for every class and every teacher at once, and cannot hand back a
+      schedule in which anyone is in two places at the same time.
+    </p>
+
+    <div class="figures">
+      <div class="fig">
+        <div class="fig-v">198</div>
+        <span class="fig-k">Slots filled</span>
+      </div>
+
+      <div class="ring-wrap">
+        <div class="ring"></div>
+        <div class="ring-label">
+          <div class="ring-v">144</div>
+          <span class="ring-k">of 144 sessions</span>
+        </div>
+      </div>
+
+      <div class="fig">
+        <div class="fig-v">95%</div>
+        <span class="fig-k">Preferences met</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section>
+    <span class="eyebrow">The problem</span>
+    <h2>One teacher, two rooms, same hour</h2>
+    <p>
+      A department timetable falls apart on a single failure: Prof.&nbsp;Kale is down to teach
+      SE-B at Monday 09:00 and SE-C at Monday 09:00. Everything else can be right and the
+      timetable is still unusable.
+    </p>
+    <p>
+      This is not treated as something to check for afterwards. It is written into the model as
+      a constraint, which means the left-hand state below is not a bug the solver might produce
+      on a bad day — it is not in the space of answers it can return at all.
+    </p>
+
+    <div class="demo">
+      <div class="slab bad">
+        <div class="slab-k"><span class="mark">×</span> Cannot be returned</div>
+        <div class="slot"><span class="when">Mon 09:00</span><span class="what">SE-B · DBMS · Kale</span></div>
+        <div class="slot"><span class="when">Mon 09:00</span><span class="what">SE-C · DBMS · Kale</span></div>
+        <p class="slab-note">
+          Both sessions land on the same <em>(teacher, slot)</em> pair. Their sum would be 2,
+          and the constraint caps it at 1.
+        </p>
+      </div>
+
+      <div class="slab good">
+        <div class="slab-k"><span class="mark">✓</span> What it returns</div>
+        <div class="slot"><span class="when">Mon 09:00</span><span class="what">SE-B · DBMS · Kale</span></div>
+        <div class="slot"><span class="when">Mon 10:00</span><span class="what">SE-C · DBMS · Kale</span></div>
+        <p class="slab-note">
+          Or it reports that no clash-free timetable exists and names what is blocking it.
+          There is no third outcome.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      The scheduling is done by <strong>OR-Tools CP-SAT</strong>, a constraint solver. No
+      language model is involved in generating a timetable.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Getting started</span>
+    <h2>Running it</h2>
+<pre><code>uv sync
+uv run timetable serve          <span class="c"># http://localhost:8000</span></code></pre>
+    <p>
+      On first run the configuration is seeded from a realistic sample department — six
+      divisions, eighteen batches, twenty-two teachers, eighty-four teaching commitments — so
+      there is something to generate before you have typed anything in.
+    </p>
+<pre><code>uv run timetable validate                 <span class="c"># pre-flight checks only</span>
+uv run timetable solve                    <span class="c"># solve and print a report</span>
+uv run timetable solve --out sheets.html  <span class="c"># ...and write every timetable</span>
+uv run timetable reset                    <span class="c"># restore the sample dataset</span>
+uv run pytest                             <span class="c"># the test suite</span></code></pre>
+  </section>
+
+  <section>
+    <span class="eyebrow">Inputs</span>
+    <h2>What you configure</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Section</th><th>What it holds</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Time grid</td><td>Working days, and the periods in a day. Mark lunch as a <strong>break</strong>.</td></tr>
+          <tr><td>Divisions</td><td>SE-B is a division; SE-B1/B2/B3 are its batches.</td></tr>
+          <tr><td>Subjects</td><td>Theory goes to a division, a practical to a single batch.</td></tr>
+          <tr><td>Rooms</td><td>Classrooms and labs, with types and capacities.</td></tr>
+          <tr><td>Teachers</td><td>Days off, blocked slots, morning or after-break preference.</td></tr>
+          <tr><td>Workload</td><td>One row per commitment: who teaches what, to whom, how often.</td></tr>
+          <tr><td>Pinned events</td><td>Fixed blocks the solver has to schedule around.</td></tr>
+          <tr><td>Rules</td><td>The hard rules, and the weights behind the soft goals.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>
+      You allocate the teachers. The solver decides only <em>when</em> each session happens and
+      <em>which room</em> it happens in.
+    </p>
+    <p>
+      Breaks carry real weight. They split the day into morning and afternoon — which is what
+      “after the break” means when a teacher states a preference — and a two-slot practical can
+      never be placed across one.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">The model</span>
+    <h2>Guaranteed, and merely preferred</h2>
+    <p>
+      Every rule in the first list is a hard constraint. They hold in any timetable the app
+      produces, without exception, because a schedule that broke one would not satisfy the
+      model. The second list is optimised only after all of the first already holds.
+    </p>
+
+    <h3>Always true</h3>
+    <ul class="rules hard">
+      <li><span class="lead">No teacher is in two places at once</span> — across every year and division, which is the case at the top of this page.</li>
+      <li><span class="lead">No group of students is in two places at once.</span> A division's lecture blocks all of its batches; sibling batches may still run practicals in parallel.</li>
+      <li><span class="lead">No room hosts two sessions at once</span>, and a practical only lands in a room of the right type and capacity.</li>
+      <li><span class="lead">A two-slot practical occupies genuinely back-to-back slots</span> on one day, never split by a break.</li>
+      <li><span class="lead">Days off and blocked slots are never used.</span></li>
+      <li><span class="lead">Every commitment gets exactly the sessions you asked for.</span></li>
+    </ul>
+
+    <h3>Optimised where possible</h3>
+    <ul class="rules soft">
+      <li><span class="lead">Morning or after-break preference</span>, scaled by how strongly each teacher holds it.</li>
+      <li><span class="lead">An even weekly spread</span> of a batch's classes rather than three of them stacked on a Tuesday.</li>
+      <li><span class="lead">No gaps in a student's day</span> — an idle hour wedged between two classes.</li>
+    </ul>
+
+    <div class="legend">
+      <span><span class="swatch h"></span> hard — guaranteed</span>
+      <span><span class="swatch s"></span> soft — weighted, tunable</span>
+    </div>
+
+    <p>
+      On the sample department the solver places all 144 sessions optimally in about four
+      seconds and honours 95% of stated teacher preferences.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Failure</span>
+    <h2>When it cannot be done</h2>
+    <p>
+      A bare <code>INFEASIBLE</code> is useless to whoever has to fix the timetable, so an
+      impossible configuration is diagnosed rather than merely rejected.
+    </p>
+    <p>
+      <strong>Pre-flight checks</strong> run before the solver and catch most real
+      misconfigurations by name — including bounds that are genuinely hard to see by eye:
+    </p>
+
+    <div class="callout">
+      <span class="k">Reported, not guessed</span>
+      18 parallel lab blocks are required but at most 12 fit: 5 computer_lab rooms let only 1
+      division run practicals at a time, and the week has 12 non-overlapping 2-slot blocks
+      (12 × 1 = 12).
+    </div>
+
+    <p>
+      That one is worth reading twice. Three batches per division means a single lab block
+      consumes three rooms at once, and a day split by lunch offers only two non-overlapping
+      double periods — so the ceiling has nothing to do with total lab hours. Without the
+      check it surfaces as an unexplained failure.
+    </p>
+    <p>
+      If a configuration is still infeasible, the model is re-solved with the session-count
+      requirement softened. You get the closest timetable that exists, plus a per-assignment
+      account of what could not be placed and why.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Under the hood</span>
+    <h2>How the model is built</h2>
+    <p>
+      One boolean per <em>(commitment, possible start slot)</em> says a session begins there,
+      and one per <em>(commitment, start, room)</em> says which room it uses. Placements that
+      would break contiguity, land on a day off or collide with a pinned event are never given
+      a variable at all — so those rules hold by construction, and the model stays small.
+    </p>
+    <p>
+      The clash rules are then just capacity: for each teacher, each batch and each room, the
+      sessions covering any one slot must sum to at most one.
+    </p>
+    <p>
+      The student rule is stated <strong>per batch rather than per division</strong>, and that
+      single choice yields all three required behaviours at once — a division's lecture blocks
+      every batch beneath it, two practicals for one batch conflict, and sibling batches remain
+      free to run different labs in the same hour.
+    </p>
+
+<pre><code>src/timetable/
+  models.py      <span class="c">Pydantic entities; Config is the whole configuration</span>
+  grid.py        <span class="c">Slots, contiguous runs, morning/afternoon derivation</span>
+  resources.py   <span class="c">Who is blocked when; rooms and students per session</span>
+  validate.py    <span class="c">Pre-flight feasibility checks</span>
+  solver.py      <span class="c">The CP-SAT model</span>
+  diagnose.py    <span class="c">Explains what could not be placed</span>
+  views.py       <span class="c">Solution to grids, plus audit()</span>
+  export.py      <span class="c">Printable HTML and CSV</span>
+  api.py, cli.py <span class="c">Web API and command line</span>
+web/             <span class="c">Vanilla JS UI, no build step</span>
+tests/           <span class="c">Clash guarantees, grid rules, validation, API</span></code></pre>
+  </section>
+
+  <section>
+    <span class="eyebrow">Verification</span>
+    <h2>Checked, not asserted</h2>
+    <p>
+      <code>views.audit()</code> re-examines a finished timetable for clashes
+      <em>independently of the solver</em>. It walks the returned sessions and looks for any
+      teacher, batch or room occupying a slot twice, any practical broken across a break, and
+      any session sitting on a blocked slot.
+    </p>
+    <p>
+      That is what the green <strong>Verified clash-free</strong> badge in the interface
+      reports — a second opinion, not the solver vouching for itself. The test suite runs the
+      same function, including a fixture built specifically to tempt the solver into the SE-B /
+      SE-C overlap in a two-slot week where the only honest answer separates them.
+    </p>
+  </section>
+
+  <section>
+    <span class="eyebrow">Typography</span>
+    <h2>Set in Anthropic Serif</h2>
+    <p>
+      Both optical cuts are used for what they were drawn for. <strong>Display</strong> — the
+      tighter, higher-contrast cut — carries the headings and the large figures at the top of
+      this page, in Light where the numerals run big enough to need the air.
+      <strong>Text</strong>, more open and sturdier at reading size, sets everything you are
+      reading now.
+    </p>
+    <p>
+      The application interface inverts that balance deliberately: serif for display moments
+      only, and a system sans for the configuration tables, where a dense grid of inputs scans
+      faster and a display cut would turn fragile.
+    </p>
+  </section>
+
+</main>
+
+<hr>
+
+<footer>
+  Built with OR-Tools CP-SAT · self-hosted Anthropic Serif · no external requests
+</footer>
