@@ -175,6 +175,10 @@ class SolverOptions(Model):
 
 
 class Config(Model):
+    # Whose timetable this is. Purely descriptive -- it heads the printable
+    # export so a sheet handed to a student says where it came from.
+    institution: str = ""
+    department: str = ""
     days: list[str] = Field(default_factory=lambda: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"])
     periods: list[Period] = Field(default_factory=list)
     divisions: list[Division] = Field(default_factory=list)

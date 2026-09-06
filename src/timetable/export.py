@@ -132,13 +132,17 @@ def all_timetables_html(config: Config, grid: Grid, res: Resources,
 
     placed = len(solution.sessions)
     requested = sum(a.sessions_per_week for a in config.assignments)
-    meta = (
-        f"{placed} of {requested} sessions placed · solver status {solution.status} · "
-        f"{solution.solve_seconds}s"
-    )
+    meta = " · ".join(part for part in (
+        config.institution,
+        config.department,
+        f"{placed} of {requested} sessions placed",
+        f"solver status {solution.status}",
+        f"{solution.solve_seconds}s",
+    ) if part)
+    title = " — ".join(p for p in (config.institution, config.department) if p) or "Timetables"
     return (
         "<!doctype html><html><head><meta charset='utf-8'>"
-        "<title>Timetables</title>"
+        f"<title>{html.escape(title)}</title>"
         f"<style>{PRINT_CSS}</style></head><body>"
         f"<div class='meta'>{html.escape(meta)}</div>"
         f"{''.join(parts)}</body></html>"

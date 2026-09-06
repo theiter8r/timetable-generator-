@@ -60,7 +60,19 @@ async function api(path, options = {}) {
 
 function markDirty() {
   state.dirty = true;
+  // In the setup wizard nothing is ever left unsaved: every edit schedules a
+  // save, and the header reports on it instead.
+  if (typeof wizardActive === 'function' && wizardActive()) { wizardTouched(); return; }
+  $('#save-state').className = 'save-state';
   $('#save-state').textContent = 'unsaved changes';
+}
+
+/* Required fields carry a red edge until they are filled in. Empty is a normal
+ * state while typing, so this is a hint, not an error -- the step's checklist
+ * is what actually reports what is missing. */
+function flagRequired(input, value) {
+  const empty = value === '' || value === null || value === undefined;
+  input.classList.toggle('missing', empty);
 }
 
 /* ------------------------------------------------------------------ *
@@ -84,31 +96,45 @@ const opts = {
 /* ------------------------------------------------------------------ *
  * Cell editors
  * ------------------------------------------------------------------ */
-function textCell(obj, key, placeholder) {
-  return h('input', {
+function textCell(obj, key, placeholder, { required = false } = {}) {
+  const input = h('input', {
     value: obj[key] ?? '', placeholder: placeholder || '',
-    oninput: (e) => { obj[key] = e.target.value; markDirty(); },
+    oninput: (e) => {
+      obj[key] = e.target.value;
+      if (required) flagRequired(input, e.target.value);
+      markDirty();
+    },
   });
+  if (required) { input.classList.add('req'); flagRequired(input, obj[key]); }
+  return input;
 }
 
-function numberCell(obj, key, { min = 0, max = 999, nullable = false } = {}) {
-  return h('input', {
+function numberCell(obj, key, { min = 0, max = 999, nullable = false, required = false } = {}) {
+  const input = h('input', {
     type: 'number', min, max,
     value: obj[key] ?? '',
     placeholder: nullable ? '—' : '',
     oninput: (e) => {
       const raw = e.target.value;
       obj[key] = raw === '' ? (nullable ? null : 0) : Number(raw);
+      if (required) flagRequired(input, obj[key] || '');
       markDirty();
     },
   });
+  if (required) { input.classList.add('req'); flagRequired(input, obj[key] || ''); }
+  return input;
 }
 
-function selectCell(obj, key, options, { blank = null } = {}) {
+function selectCell(obj, key, options, { blank = null, required = false } = {}) {
   const list = typeof options === 'function' ? options() : options;
   const select = h('select', {
-    onchange: (e) => { obj[key] = e.target.value || null; markDirty(); },
+    onchange: (e) => {
+      obj[key] = e.target.value || null;
+      if (required) flagRequired(select, e.target.value);
+      markDirty();
+    },
   });
+  if (required) { select.classList.add('req'); flagRequired(select, obj[key]); }
   if (blank !== null) select.append(h('option', { value: '' }, blank));
   list.forEach((o) => {
     const value = o.value ?? o;
@@ -335,9 +361,9 @@ function tabGrid() {
     'and a practical can never run across one. Leaving "Half" on auto puts everything before the ' +
     'longest break in the morning.',
     editTable(cfg.periods, [
-      { label: 'ID', cell: (r) => textCell(r, 'id') },
-      { label: 'Start', cell: (r) => textCell(r, 'start', '09:00') },
-      { label: 'End', cell: (r) => textCell(r, 'end', '10:00') },
+      { label: 'ID', cell: (r) => textCell(r, 'id', '', { required: true }) },
+      { label: 'Start', cell: (r) => textCell(r, 'start', '09:00', { required: true }) },
+      { label: 'End', cell: (r) => textCell(r, 'end', '10:00', { required: true }) },
       { label: 'Kind', cell: (r) => selectCell(r, 'kind', [
         { value: 'teaching', label: 'teaching' }, { value: 'break', label: 'break' }]) },
       { label: 'Label', cell: (r) => textCell(r, 'label', 'optional') },
@@ -356,7 +382,7 @@ function tabClasses() {
       'A division is the group taught theory together, e.g. SE-B. The home room is where its ' +
       'lectures are held.',
       editTable(cfg.divisions, [
-        { label: 'ID', cell: (r) => textCell(r, 'id', 'SE-B') },
+        { label: 'ID', cell: (r) => textCell(r, 'id', 'SE-B', { required: true }) },
         { label: 'Year', cell: (r) => textCell(r, 'year', 'SE') },
         { label: 'Strength', cell: (r) => numberCell(r, 'strength') },
         { label: 'Home room', cell: (r) => selectCell(r, 'home_room', opts.rooms, { blank: '— none —' }) },
@@ -366,8 +392,8 @@ function tabClasses() {
       'Sub-groups that do practicals separately. Batches of the same division can be in different ' +
       'labs at the same time; a lecture for the division blocks all of them.',
       editTable(cfg.batches, [
-        { label: 'ID', cell: (r) => textCell(r, 'id', 'SE-B1') },
-        { label: 'Division', cell: (r) => selectCell(r, 'division', opts.divisions) },
+        { label: 'ID', cell: (r) => textCell(r, 'id', 'SE-B1', { required: true }) },
+        { label: 'Division', cell: (r) => selectCell(r, 'division', opts.divisions, { required: true }) },
         { label: 'Strength', cell: (r) => numberCell(r, 'strength') },
       ], () => ({ id: uid('B', cfg.batches), division: (cfg.divisions[0] || {}).id || '', name: '', strength: 25 }))),
   ];
@@ -379,8 +405,8 @@ function tabSubjects() {
     'Theory is taught to a whole division; a practical is taught to one batch. The room type ' +
     'decides which rooms a session may use — it must match a room type below.',
     editTable(cfg.subjects, [
-      { label: 'ID', cell: (r) => textCell(r, 'id') },
-      { label: 'Name', cell: (r) => textCell(r, 'name') },
+      { label: 'ID', cell: (r) => textCell(r, 'id', '', { required: true }) },
+      { label: 'Name', cell: (r) => textCell(r, 'name', '', { required: true }) },
       { label: 'Short', cell: (r) => textCell(r, 'short', 'DBMS') },
       { label: 'Kind', cell: (r) => selectCell(r, 'kind', [
         { value: 'theory', label: 'theory' }, { value: 'practical', label: 'practical' }]) },
@@ -394,10 +420,10 @@ function tabRooms() {
     'Every session gets a room, and no room hosts two sessions at once. A room is eligible when ' +
     'its type matches the subject and its capacity covers the audience.',
     editTable(cfg.rooms, [
-      { label: 'ID', cell: (r) => textCell(r, 'id') },
+      { label: 'ID', cell: (r) => textCell(r, 'id', '', { required: true }) },
       { label: 'Name', cell: (r) => textCell(r, 'name') },
-      { label: 'Type', cell: (r) => textCell(r, 'type', 'classroom') },
-      { label: 'Capacity', cell: (r) => numberCell(r, 'capacity') },
+      { label: 'Type', cell: (r) => textCell(r, 'type', 'classroom', { required: true }) },
+      { label: 'Capacity', cell: (r) => numberCell(r, 'capacity', { required: true }) },
     ], () => ({ id: uid('R', cfg.rooms), name: '', type: 'classroom', capacity: 70 })))];
 }
 
@@ -409,8 +435,8 @@ function tabTeachers() {
     'clash rule is satisfied, and weight decides who wins when two preferences compete. ' +
     'Max/day is an optional hard cap; leave it empty for no limit.',
     editTable(cfg.teachers, [
-      { label: 'ID', cell: (r) => textCell(r, 'id') },
-      { label: 'Name', cell: (r) => textCell(r, 'name') },
+      { label: 'ID', cell: (r) => textCell(r, 'id', '', { required: true }) },
+      { label: 'Name', cell: (r) => textCell(r, 'name', '', { required: true }) },
       { label: 'Prefers', cell: (r) => selectCell(r, 'session_preference', [
         { value: 'none', label: 'no preference' },
         { value: 'morning', label: 'morning' },
@@ -432,7 +458,7 @@ function tabWorkload() {
     wrap.append(selectCell(row.target, 'kind', [
       { value: 'division', label: 'division' }, { value: 'batch', label: 'batch' }]));
     wrap.append(selectCell(row.target, 'id',
-      row.target.kind === 'batch' ? opts.batches : opts.divisions));
+      row.target.kind === 'batch' ? opts.batches : opts.divisions, { required: true }));
     return wrap;
   };
 
@@ -442,12 +468,12 @@ function tabWorkload() {
     'meeting is — a practical is normally 1 session of 2 slots, and those 2 slots are always ' +
     'back-to-back on one day. Leave rooms empty to let any suitable room be used.',
     editTable(cfg.assignments, [
-      { label: 'ID', cell: (r) => textCell(r, 'id') },
-      { label: 'Subject', cell: (r) => selectCell(r, 'subject', opts.subjects) },
+      { label: 'ID', cell: (r) => textCell(r, 'id', '', { required: true }) },
+      { label: 'Subject', cell: (r) => selectCell(r, 'subject', opts.subjects, { required: true }) },
       { label: 'Taught to', cell: targetCell },
       { label: 'Teacher(s)', cell: (r) => idListCell(r, 'teachers', opts.teachers, '+ teacher') },
-      { label: 'Sessions/wk', cell: (r) => numberCell(r, 'sessions_per_week', { min: 1 }) },
-      { label: 'Slots each', cell: (r) => numberCell(r, 'slots_per_session', { min: 1, max: 6 }) },
+      { label: 'Sessions/wk', cell: (r) => numberCell(r, 'sessions_per_week', { min: 1, required: true }) },
+      { label: 'Slots each', cell: (r) => numberCell(r, 'slots_per_session', { min: 1, max: 6, required: true }) },
       { label: 'Rooms', cell: (r) => idListCell(r, 'allowed_rooms', opts.rooms, 'any suitable') },
     ], () => ({
       id: uid('A', cfg.assignments),
@@ -831,6 +857,11 @@ const RENDERERS = {
 };
 
 function render() {
+  // First run (and any time setup is reopened) the wizard owns the whole page:
+  // same editors, walked through one step at a time.
+  if (typeof wizardActive === 'function' && wizardActive()) { renderWizard(); return; }
+  document.body.classList.remove('wizard');
+
   const nav = $('#nav');
   nav.textContent = '';
   TABS.forEach(([key, label]) => {
@@ -854,7 +885,14 @@ async function boot() {
       'This discards every edit and restores the shipped sample dataset.',
       h('div'), doReset);
   });
-  state.config = await api('/api/config');
+  $('#btn-setup').addEventListener('click', reopenWizard);
+
+  const [config, onboarding] = await Promise.all([
+    api('/api/config'),
+    api('/api/onboarding'),
+  ]);
+  state.config = config;
+  wizardInit(onboarding);
   render();
 }
 

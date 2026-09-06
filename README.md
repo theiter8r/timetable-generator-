@@ -9,7 +9,38 @@ also appear in SE-C at Monday 09:00.** That is encoded as a hard constraint, so
 the solver either returns a schedule with no clashes anywhere, or reports that
 your configuration cannot be satisfied. It never returns a broken timetable.
 
-## Running it
+## Installing
+
+Everything lands in a `.venv/` inside this folder — nothing is installed
+system-wide, so uninstalling is deleting the folder. Both installers are safe to
+run again at any time; that is also how you upgrade after pulling new code.
+
+**macOS / Linux**
+
+```bash
+./build.sh          # install (--clean to start over, --test to run the suite)
+./start.sh          # run it, and open http://localhost:8000
+```
+
+**Windows**
+
+```bat
+build.bat
+start.bat
+```
+
+or just double-click `start.bat` once `build.bat` has run.
+
+The installers need Python 3.11+ and an internet connection the first time. They
+use [uv](https://docs.astral.sh/uv/) when it is present — the exact versions
+pinned in `uv.lock`, and faster — and fall back to `venv` + `pip` when it is not.
+Either way `build.sh`/`build.bat` finish by building a real CP-SAT model, so an
+install that prints "Done" is one that runs.
+
+`start.sh` / `start.bat` take a port (`./start.sh 8080`), walk up from 8000 if
+that port is busy, and accept `--no-browser` and `--lan`.
+
+### Running it from a checkout
 
 ```bash
 uv sync
@@ -26,10 +57,40 @@ uv run timetable reset                    # restore the sample dataset
 uv run pytest                             # the test suite
 ```
 
+## First run: guided setup
+
+The first time the app opens it is a wizard rather than a blank editor. It asks
+for one thing at a time, in the order that makes each answer possible to give —
+rooms before subjects, because a subject points at a room type; teachers before
+workload, because the workload table allocates them:
+
+> Welcome · Time grid · Divisions & batches · Rooms · Subjects · Teachers ·
+> Workload · Pinned events · Rules · Review
+
+Each step states what it needs before you fill anything in, required fields carry
+a red edge until they are filled, and the step is graded live: *"Subject DBMS
+needs a computer_lab room and no room of that type exists"* rather than a failure
+three steps later. A step with something still missing will not let you press
+Next, though you can always leave it for now and come back.
+
+**Nothing is ever left unsaved.** Every edit saves itself about a second later,
+and again whenever you move between steps, so closing the laptop half-way through
+and coming back tomorrow reopens on the step you were on with everything intact.
+A half-typed table that cannot be saved yet — two rows briefly sharing an ID —
+says so in words and saves as soon as it is fixed.
+
+The welcome step offers an empty department (with a working week and a standard
+six-period day already laid out) or the sample dataset to look through and edit.
+Finishing the guide opens the full tabbed editor; the **Setup guide** button in
+the header walks back through it at any time, with everything already entered
+kept.
+
 Configuration lives in `data/config.json`, seeded on first run from
 `data/sample_config.json` — a realistic department of 6 divisions, 18 batches,
 22 teachers and 84 teaching commitments. Edit it in the browser, or regenerate
-the sample with `uv run python scripts/make_sample.py`.
+the sample with `uv run python scripts/make_sample.py`. How far setup has got
+lives beside it in `data/onboarding.json`, kept separate so that the config stays
+purely the thing the solver reads.
 
 ## What you configure
 
@@ -122,11 +183,17 @@ src/timetable/
   validate.py    Pre-flight feasibility checks
   solver.py      The CP-SAT model
   diagnose.py    Explains what could not be placed
+  onboarding.py  The setup steps, and what each one is still missing
   views.py       Solution -> division/batch/teacher/room grids, plus audit()
   export.py      Printable HTML and CSV
+  store.py       The config and the setup progress, as JSON on disk
   api.py, cli.py Web API and command line
 web/             Dependency-free vanilla JS UI (no build step)
-tests/           Clash guarantees, grid rules, validation, API
+  app.js         The tabbed editor and the timetable views
+  onboarding.js  The setup wizard, reusing the same editors one step at a time
+build.sh/.bat    Install into .venv/
+start.sh/.bat    Run it, on the first free port, and open a browser
+tests/           Clash guarantees, grid rules, validation, API, setup steps
 ```
 
 `views.audit()` re-checks a finished timetable for clashes *independently of the

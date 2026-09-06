@@ -6,19 +6,29 @@ thing worth persisting, and a timetable can always be regenerated from it.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import FileResponse, HTMLResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, ValidationError
 
 from . import export, views
 from .diagnose import utilisation
 from .grid import Grid
 from .models import Config, Solution
+from .onboarding import OnboardingState, blank_config, step_report
 from .resources import build_resources
 from .solver import solve_with_fallback
-from .store import ROOT, load_config, reset_config, save_config
+from .store import (
+    ROOT,
+    load_config,
+    load_onboarding,
+    load_sample,
+    reset_config,
+    save_config,
+    save_onboarding,
+)
 from .validate import validate
 
 WEB_DIR = ROOT / "web"
@@ -67,6 +77,127 @@ def post_reset() -> dict[str, Any]:
     config = reset_config()
     _state["solution"] = None
     return config.model_dump(mode="json")
+
+
+# --- setup wizard ------------------------------------------------------
+#
+# The wizard saves after every edit, so its endpoints are deliberately
+# forgiving: a half-typed table is normal, and the answer to one is a list of
+# what is still missing, never a 4xx that the browser has to interpret.
+
+
+class WizardSave(BaseModel):
+    """One autosave from the wizard: the config so far, and where the user is.
+
+    ``config`` is an unvalidated dict on purpose. Mid-edit it can be briefly
+    invalid -- two rows sharing an id while one is being renamed, say -- and a
+    422 from FastAPI would be both unhelpful and unreadable in the browser. We
+    validate it here and report the problem in words instead.
+    """
+
+    config: dict[str, Any] | None = None
+    state: OnboardingState | None = None
+
+
+class WizardStart(BaseModel):
+    source: Literal["blank", "sample"] = "blank"
+    institution: str = ""
+    department: str = ""
+
+
+def _is_pristine(config: Config) -> bool:
+    """True when the config is still the shipped sample -- nothing to lose.
+
+    On a first run the config file does not exist and is seeded from the sample,
+    so the wizard opens with a full department on screen that nobody typed.
+    Without this, "start from scratch" would warn about losing work that was
+    never done. The department name is ignored: naming the department is the
+    first thing the wizard asks for, and it is no reason to start warning.
+    """
+    def comparable(cfg: Config) -> dict[str, Any]:
+        data = cfg.model_dump()
+        data.pop("institution", None)
+        data.pop("department", None)
+        return data
+
+    return comparable(config) == comparable(load_sample())
+
+
+def _wizard_payload(config: Config, state: OnboardingState) -> dict[str, Any]:
+    return {
+        "ok": True,
+        "state": state.model_dump(mode="json"),
+        "steps": step_report(config),
+        "saved_at": state.updated_at,
+        "pristine": _is_pristine(config),
+    }
+
+
+def _validation_messages(error: ValidationError) -> list[str]:
+    """Pydantic's error list, rewritten for someone filling in a form."""
+    out: list[str] = []
+    for item in error.errors():
+        where = ".".join(str(part) for part in item["loc"])
+        message = item["msg"].removeprefix("Value error, ")
+        out.append(f"{where}: {message}" if where else message)
+    return out
+
+
+@app.get("/api/onboarding")
+def get_onboarding() -> dict[str, Any]:
+    return _wizard_payload(load_config(), load_onboarding())
+
+
+@app.put("/api/onboarding")
+def put_onboarding(payload: WizardSave) -> dict[str, Any]:
+    """Save the step's edits and the wizard's position, in one round trip."""
+    config = load_config()
+    if payload.config is not None:
+        try:
+            config = Config.model_validate(payload.config)
+        except ValidationError as error:
+            return {
+                "ok": False,
+                "errors": _validation_messages(error),
+                "state": load_onboarding().model_dump(mode="json"),
+            }
+        save_config(config)
+        # A config change invalidates any timetable already generated from the
+        # old one; better no timetable than a stale one presented as current.
+        _state["solution"] = None
+
+    state = save_onboarding(payload.state) if payload.state else load_onboarding()
+    return _wizard_payload(config, state)
+
+
+@app.post("/api/onboarding/start")
+def post_onboarding_start(payload: WizardStart) -> dict[str, Any]:
+    """Begin setup from an empty department or from the shipped sample."""
+    config = blank_config() if payload.source == "blank" else load_sample()
+    config.institution = payload.institution
+    config.department = payload.department
+    save_config(config)
+    _state["solution"] = None
+
+    state = save_onboarding(OnboardingState(
+        step="grid", visited=["welcome"], started_from=payload.source,
+    ))
+    return {**_wizard_payload(config, state), "config": config.model_dump(mode="json")}
+
+
+@app.post("/api/onboarding/finish")
+def post_onboarding_finish() -> dict[str, Any]:
+    state = load_onboarding()
+    state.finished = True
+    return _wizard_payload(load_config(), save_onboarding(state))
+
+
+@app.post("/api/onboarding/reopen")
+def post_onboarding_reopen() -> dict[str, Any]:
+    """Go back into the guided setup without losing anything already entered."""
+    state = load_onboarding()
+    state.finished = False
+    return _wizard_payload(load_config(), save_onboarding(state))
 
 
 # --- validate & solve --------------------------------------------------

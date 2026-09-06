@@ -579,11 +579,164 @@ ul.plain li { margin-bottom: 5px; }
 
 .empty { color: var(--muted); font-size: 13px; padding: 20px 0; text-align: center; }
 
+/* A required field that has not been filled in yet. Empty is a perfectly
+   normal state while typing, so this is a quiet edge, not an alarm. */
+table.edit input.req.missing,
+table.edit select.req.missing {
+  border-color: rgba(209, 80, 63, .55);
+  background: rgba(209, 80, 63, .05);
+}
+
+button.link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+button.link:hover { color: var(--ink); }
+
+/* ------------------------------------------------------------------ *
+ * Setup wizard
+ * ------------------------------------------------------------------ */
+body.wizard .app-only { display: none; }
+
+.save-state.ok { opacity: .9; }
+.save-state.bad { opacity: 1; font-weight: 650; color: #ffe2dc; }
+
+/* Progress through the required steps, under the step title in the hero. */
+.setup-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 460px;
+  margin: 18px auto 0;
+}
+.setup-progress .track {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .3);
+  overflow: hidden;
+}
+.setup-progress .fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: #fff;
+  transition: width .35s ease;
+}
+.setup-progress-k {
+  font-size: 11px;
+  letter-spacing: .04em;
+  opacity: .9;
+  white-space: nowrap;
+}
+
+/* The step rail reuses the nav pill; each step carries its own state. */
+nav button.step-tab { display: flex; align-items: center; gap: 7px; padding: 8px 13px; }
+.step-dot {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--bone-deep);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+nav button.step-tab.ok .step-dot { background: var(--green); color: #fff; }
+nav button.step-tab.bad .step-dot { background: var(--red); color: #fff; }
+nav button.step-tab.active .step-dot { background: var(--bone); color: var(--ink); }
+nav button.step-tab.active.ok .step-dot { background: var(--green); color: #fff; }
+
+.wizard-lead { max-width: 900px; margin: 0 0 22px; }
+.wizard-lead > p {
+  font-family: var(--serif-text);
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--ink-soft);
+  margin: 0 0 18px;
+}
+
+/* What the step is asking for, before any of it has been filled in. */
+.needs {
+  border-left: 2px solid var(--line);
+  padding: 2px 0 2px 16px;
+  margin-bottom: 16px;
+}
+.needs .eyebrow { display: block; color: var(--muted); }
+.needs ul.plain { color: var(--ink-soft); }
+
+/* The two ways to begin, on the welcome step. */
+.choices { display: flex; gap: 16px; flex-wrap: wrap; }
+.choice {
+  flex: 1;
+  min-width: 280px;
+  text-align: left;
+  padding: 20px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  cursor: pointer;
+  font: inherit;
+  transition: border-color .15s ease, box-shadow .15s ease, transform .15s ease;
+}
+.choice:hover {
+  border-color: var(--ink);
+  box-shadow: var(--shadow);
+  transform: translateY(-1px);
+}
+.choice strong {
+  display: block;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 21px;
+  margin-bottom: 8px;
+}
+.choice span { display: block; color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+/* Back / Next, pinned to the bottom of the viewport so it is always in reach
+   however long the table above it grows. */
+.wizard-foot {
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 26px;
+  padding: 14px 18px;
+  border-radius: 999px;
+  background: rgba(252, 251, 248, .95);
+  backdrop-filter: saturate(1.7) blur(14px);
+  box-shadow: var(--shadow);
+}
+.wizard-foot .grow { flex: 1; }
+
+.wizard-note {
+  color: var(--muted);
+  font-size: 12.5px;
+  text-align: center;
+  margin: 16px 0 0;
+}
+.wizard-note button.link { margin-left: 8px; }
+
+table.edit td.ok { color: var(--green-deep); font-weight: 650; }
+table.edit td.bad { color: #8e2f22; font-weight: 650; }
+
 /* ------------------------------------------------------------------ *
  * Print: drop the chrome, keep the grid readable on paper.
  * ------------------------------------------------------------------ */
 @media print {
-  .hero, nav, .toolbar, .panel.actions { display: none !important; }
+  .hero, nav, .toolbar, .panel.actions, .wizard-foot, .wizard-note { display: none !important; }
   body { background: #fff; }
   main { padding: 0; }
   .panel { box-shadow: none; padding: 0; }

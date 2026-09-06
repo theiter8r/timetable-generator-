@@ -15,8 +15,9 @@
       </div>
       <span class="spacer"></span>
       <span class="save-state" id="save-state"></span>
-      <button class="btn" id="btn-reset" title="Restore the shipped sample dataset">Reset</button>
-      <button class="btn primary" id="btn-save">Save</button>
+      <button class="btn app-only" id="btn-setup" title="Walk through setup step by step">Setup guide</button>
+      <button class="btn app-only" id="btn-reset" title="Restore the shipped sample dataset">Reset</button>
+      <button class="btn primary app-only" id="btn-save">Save</button>
     </div>
     <div id="hero-body"></div>
   </header>
@@ -25,6 +26,9 @@
   <main id="main"></main>
 
   <div id="modal-root"></div>
+  <!-- The wizard is loaded first: it only defines functions, and app.js calls
+       into them from render() and boot(). -->
+  <script src="/static/onboarding.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>
